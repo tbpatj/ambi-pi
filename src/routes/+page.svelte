@@ -1,6 +1,8 @@
-<div
-	class="relative mx-auto flex h-screen w-full max-w-[430px] flex-col overflow-hidden border-x border-slate-200 shadow-2xl dark:border-slate-800"
->
+<script>
+	import { goto } from '$app/navigation';
+</script>
+
+<div class="relative mx-auto flex h-screen w-full max-w-[430px] flex-col overflow-hidden">
 	<!-- TopAppBar -->
 	<header
 		class="bg-background-light/80 dark:bg-background-dark/80 ios-blur sticky top-0 z-10 flex items-center justify-between p-4"
@@ -56,6 +58,7 @@
 			</div>
 			<!-- Primary Action Button -->
 			<button
+				onclick={() => goto('/add-device')}
 				class="group bg-primary shadow-primary/25 relative flex h-14 w-full max-w-[240px] cursor-pointer items-center justify-center gap-3 overflow-hidden rounded-xl font-bold text-white shadow-lg transition-all hover:brightness-110 active:scale-95"
 			>
 				<span class="material-symbols-outlined">add_circle</span>
@@ -64,36 +67,6 @@
 		</div>
 	</main>
 	<!-- BottomNavBar -->
-	<nav
-		class="bg-background-light dark:bg-background-dark/90 ios-blur flex gap-2 border-t border-slate-200 px-6 pt-3 pb-8 dark:border-slate-800"
-	>
-		<a class="text-primary flex flex-1 flex-col items-center justify-center gap-1" href="#">
-			<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">home</span>
-			<p class="text-[10px] font-bold tracking-widest uppercase">Home</p>
-		</a>
-		<a
-			class="hover:text-primary flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 transition-colors dark:text-slate-500"
-			href="#"
-		>
-			<span class="material-symbols-outlined">auto_awesome</span>
-			<p class="text-[10px] font-bold tracking-widest uppercase">Scenes</p>
-		</a>
-		<a
-			class="hover:text-primary flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 transition-colors dark:text-slate-500"
-			href="#"
-		>
-			<span class="material-symbols-outlined">analytics</span>
-			<p class="text-[10px] font-bold tracking-widest uppercase">Activity</p>
-		</a>
-		<a
-			class="hover:text-primary flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 transition-colors dark:text-slate-500"
-			href="#"
-		>
-			<span class="material-symbols-outlined">person</span>
-			<p class="text-[10px] font-bold tracking-widest uppercase">Profile</p>
-		</a>
-	</nav>
 	<!-- Safe area for iOS devices -->
 	<div class="bg-background-light dark:bg-background-dark/90 h-2"></div>
 </div>
->
