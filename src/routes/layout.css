@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+
+body {
+	font-family: 'Space Grotesk', sans-serif;
+}
+.glow-aura {
+	box-shadow: 0 0 60px 10px rgba(19, 91, 236, 0.4);
+}
+.ios-blur {
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+body {
+	min-height: max(884px, 100dvh);
+}
