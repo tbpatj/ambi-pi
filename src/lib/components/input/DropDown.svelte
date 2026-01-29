@@ -12,7 +12,7 @@
 		disabled?: boolean;
 	}
 
-	let { label, options, value, onchange, disabled = false }: Props = $props();
+	let { label, options, value = $bindable(''), onchange, disabled = false }: Props = $props();
 
 	const handleChange = (e: Event) => {
 		const target = e.target as HTMLSelectElement;
@@ -30,12 +30,12 @@
 <div class="relative">
 	<select
 		{disabled}
-		{value}
+		bind:value
 		onchange={handleChange}
 		class="focus:ring-primary w-full cursor-pointer appearance-none rounded-xl border border-slate-200 bg-white px-4 py-4 text-slate-900 transition-all outline-none focus:border-transparent focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-white"
 	>
 		{#each options as option (option.value)}
-			<option {value} selected={value === option.value}>
+			<option value={option.value} selected={value === option.value}>
 				{option.text}
 			</option>
 		{/each}

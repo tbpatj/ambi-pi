@@ -2,6 +2,7 @@
 	import BreadCrumb from '$lib/components/layout/BreadCrumb.svelte';
 	import DotProgress from '$lib/components/layout/DotProgress.svelte';
 	import DeviceSearchSection from '$lib/components/pages/add-device/DeviceSearchSection.svelte';
+	import LedCountSection from '$lib/components/pages/add-device/LedCountSection.svelte';
 	import PinConfigSection from '$lib/components/pages/add-device/PinConfigSection.svelte';
 	let step = $state(2);
 
@@ -11,6 +12,8 @@
 	];
 
 	let connectedIp = $state('');
+	let ledType = $state('');
+	let dataPin = $state<number | null>(null);
 
 	const handleBack = () => {
 		if (step > 1) {
@@ -40,6 +43,16 @@
 		/>
 	{:else if step === 2}
 		<!-- Pin Configuration Section Placeholder -->
-		<PinConfigSection />
+		<PinConfigSection
+			initialPin={dataPin ?? undefined}
+			initialType={ledType ?? undefined}
+			onSubmit={(type, pin) => {
+				ledType = type;
+				dataPin = pin;
+				step = 3;
+			}}
+		/>
+	{:else if step === 3}
+		<LedCountSection />
 	{/if}
 </div>

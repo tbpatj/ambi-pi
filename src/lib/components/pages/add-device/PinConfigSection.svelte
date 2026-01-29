@@ -1,7 +1,45 @@
-<script>
+<script lang="ts">
 	import DropDown from '$lib/components/input/DropDown.svelte';
 	import Input from '$lib/components/input/Input.svelte';
 	import InputWrapper from '$lib/components/input/InputWrapper.svelte';
+	import { explicitEffect } from '$lib/utils/svelte.svelte';
+
+	interface Props {
+		initialPin?: number;
+		initialType?: string;
+		onSubmit: (type: string, pin: number) => void;
+	}
+
+	let { onSubmit, initialPin, initialType }: Props = $props();
+
+	let ledStripType = $state(initialType || 'ws2812b');
+	let dataPin = $state<number | null>(initialPin ?? null);
+	let pinError = $state('');
+	let mounted = $state(false);
+
+	const PIN_MIN = 2;
+	const PIN_MAX = 27;
+
+	explicitEffect(
+		() => {
+			if (!mounted) {
+				mounted = true;
+				return;
+			}
+			if (dataPin === null) {
+				pinError = 'Enter a numeric GPIO pin';
+				return;
+			}
+			if (dataPin < PIN_MIN || dataPin > PIN_MAX) {
+				pinError = `Use GPIO pins ${PIN_MIN}-${PIN_MAX}`;
+				return;
+			}
+			pinError = '';
+		},
+		() => [dataPin]
+	);
+
+	const canSubmit = $derived(dataPin !== null && pinError === '');
 </script>
 
 <main class="flex-1 px-4 pb-4">
@@ -31,6 +69,7 @@
 	<div class="space-y-6">
 		<InputWrapper subtext="Select the protocol your LEDs use">
 			<DropDown
+				bind:value={ledStripType}
 				label="Led Strip Type"
 				options={[
 					{ value: 'ws2812b', text: 'WS2812B (NeoPixel)' },
@@ -43,42 +82,24 @@
 		<div class="flex flex-col gap-2">
 			<InputWrapper subtext="Standard for WS2812B is GPIO 18 (Pin 12)">
 				<Input
+					bind:value={dataPin}
 					icon="settings_input_component"
 					label="Data Pin"
 					placeholder="e.g. 18 (GPIO18 / Pin 12)"
 					type="number"
+					error={pinError || undefined}
 				/>
 			</InputWrapper>
 		</div>
-		<div class="flex flex-col gap-2">
-			<InputWrapper
-				collapsable={true}
-				label="LED Count (optional)"
-				subtext="Total number of LEDs connected to the controller"
-			>
-				<Input icon="straighten" placeholder="e.g. 60" type="number" />
-			</InputWrapper>
-			<!-- <label class="px-1 text-sm font-semibold text-slate-900 dark:text-white"
-				>LED Count <span class="font-normal text-slate-400">(Optional)</span></label
-			>
-			<div class="relative">
-				<input
-					class="focus:ring-primary w-full rounded-xl border border-slate-200 bg-white px-4 py-4 text-slate-900 transition-all outline-none placeholder:text-slate-400 focus:border-transparent focus:ring-2 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-600"
-					placeholder="e.g. 60"
-					type="number"
-				/>
-				<span
-					class="material-symbols-outlined absolute top-1/2 right-4 -translate-y-1/2 text-slate-400"
-					>straighten</span
-				>
-			</div>
-			<p class="px-1 text-xs text-slate-500 italic dark:text-slate-500">
-				Helps estimate power requirements
-			</p> -->
-		</div>
+
 		<div class="flex flex-col gap-2">
 			<button
-				class="bg-primary shadow-primary/20 flex w-full items-center justify-center gap-2 rounded-xl py-4 font-bold text-white shadow-lg transition-transform hover:bg-blue-600 active:scale-[0.98]"
+				onclick={() => onSubmit(ledStripType, dataPin!)}
+				disabled={!canSubmit}
+				aria-disabled={!canSubmit}
+				class={`bg-primary shadow-primary/20 flex w-full items-center justify-center gap-2 rounded-xl py-4 font-bold text-white shadow-lg transition-transform hover:bg-blue-600 active:scale-[0.98] ${
+					canSubmit ? '' : 'hover:bg-primary cursor-not-allowed opacity-60'
+				}`}
 			>
 				<span>Next Step</span>
 				<span class="material-symbols-outlined text-sm">arrow_forward</span>

@@ -1,9 +1,7 @@
 <script lang="ts">
-	interface Props {
+	interface PropsBase {
 		label?: string;
-		type?: string;
 		placeholder?: string;
-		value?: string | number;
 		icon?: string;
 		regex?: RegExp;
 		disabled?: boolean;
@@ -13,11 +11,23 @@
 		error?: string;
 	}
 
+	interface PropsNumber extends PropsBase {
+		type: 'number';
+		value?: number | null;
+	}
+
+	interface PropsString extends PropsBase {
+		type?: Exclude<string, 'number'>;
+		value?: string | null;
+	}
+
+	type Props = PropsNumber | PropsString;
+
 	let {
 		label,
 		type = 'text',
 		placeholder,
-		value = '',
+		value = $bindable<string | number | null>(null),
 		icon,
 		regex,
 		disabled = false,
@@ -39,7 +49,7 @@
 			isValid = true;
 		}
 
-		value = newValue;
+		// value = target.value;
 		oninput?.(newValue);
 	};
 
@@ -61,10 +71,10 @@
 <div class="relative">
 	<input
 		{type}
-		{value}
 		{placeholder}
 		{disabled}
 		{required}
+		bind:value
 		oninput={handleInput}
 		onchange={handleChange}
 		class="focus:ring-primary w-full rounded-xl border px-4 py-4 text-slate-900 transition-all outline-none placeholder:text-slate-400 focus:border-transparent focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-slate-600 [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden {isValid
