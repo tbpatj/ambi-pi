@@ -1,13 +1,16 @@
-<script>
+<script lang="ts">
 	import BreadCrumb from '$lib/components/layout/BreadCrumb.svelte';
 	import DotProgress from '$lib/components/layout/DotProgress.svelte';
 	import DeviceSearchSection from '$lib/components/pages/add-device/DeviceSearchSection.svelte';
-	let step = $state(1);
+	import PinConfigSection from '$lib/components/pages/add-device/PinConfigSection.svelte';
+	let step = $state(2);
 
 	let sections = [
-		{ title: 'Device Search', completed: false, component: DeviceSearchSection },
+		{ title: 'Device Search', completed: false },
 		{ title: 'Pin Configuration', completed: false }
 	];
+
+	let connectedIp = $state('');
 
 	const handleBack = () => {
 		if (step > 1) {
@@ -17,19 +20,26 @@
 			window.history.back();
 		}
 	};
-
-	let Section = sections?.[step - 1]?.component;
 </script>
 
 <div
-	class="bg-background-light dark:bg-background-dark group/design-root relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden"
+	class="bg-background-light dark:bg-background-dark group/design-root relative mx-auto flex h-screen w-full max-w-md flex-col"
 >
 	<!-- TopAppBar -->
 	<BreadCrumb onBack={handleBack} title={sections?.[step - 1]?.title} />
 	<DotProgress currentStep={step} totalSteps={3} />
 	<!-- ProgressBar -->
-
-	{#if Section}
-		<svelte:component this={Section} />
+	{#if step === 1}
+		<DeviceSearchSection
+			{connectedIp}
+			onConnected={(ip: string) => {
+				// Handle device connected, proceed to next step
+				connectedIp = ip;
+				step = 2;
+			}}
+		/>
+	{:else if step === 2}
+		<!-- Pin Configuration Section Placeholder -->
+		<PinConfigSection />
 	{/if}
 </div>
