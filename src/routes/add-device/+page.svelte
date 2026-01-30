@@ -3,6 +3,7 @@
 	import DotProgress from '$lib/components/layout/DotProgress.svelte';
 	import DeviceSearchSection from '$lib/components/pages/add-device/DeviceSearchSection.svelte';
 	import LedCountSection from '$lib/components/pages/add-device/LedCountSection.svelte';
+	import LedSuccessSection from '$lib/components/pages/add-device/LedSuccessSection.svelte';
 	import PinConfigSection from '$lib/components/pages/add-device/PinConfigSection.svelte';
 	let step = $state(2);
 
@@ -14,6 +15,7 @@
 	let connectedIp = $state('');
 	let ledType = $state('');
 	let dataPin = $state<number | null>(null);
+	let ledCount = $state<number | null>(null);
 
 	const handleBack = () => {
 		if (step > 1) {
@@ -53,6 +55,19 @@
 			}}
 		/>
 	{:else if step === 3}
-		<LedCountSection />
-	{/if}
+		<LedCountSection
+			pin={dataPin ?? 0}
+			ip={connectedIp}
+			initialLedCount={ledCount ?? undefined}
+			onSubmit={(count: number) => {
+				ledCount = count;
+				step = 4;
+			}}
+			onFinish={(count: number) => {
+				ledCount = count;
+				step = 5;
+			}}
+		/>
+	{:else if step === 4}{:else if step === 5}
+		<LedSuccessSection />{/if}
 </div>
