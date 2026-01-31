@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 </script>
 
-<div class="relative mx-auto flex h-screen w-full max-w-[430px] flex-col overflow-hidden">
+<div class="relative mx-auto flex h-screen w-full max-w-[430px] flex-col">
 	<!-- TopAppBar -->
 	<header
 		class="bg-background-light/80 dark:bg-background-dark/80 ios-blur sticky top-0 z-10 flex items-center justify-between p-4"

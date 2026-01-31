@@ -7,7 +7,7 @@
 		icon?: string;
 		disabled?: boolean;
 		loading?: boolean;
-		variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
+		variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline';
 		size?: 'sm' | 'md' | 'lg';
 		fullWidth?: boolean;
 		onclick?: () => void;
@@ -35,7 +35,9 @@
 		secondary:
 			'bg-slate-200 hover:bg-slate-300 text-slate-900 dark:bg-[#232f48] dark:text-white dark:hover:bg-[#2d3b5a]',
 		danger: 'bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/20',
-		ghost: 'bg-transparent hover:bg-gray-100 text-gray-900'
+		ghost: 'bg-transparent hover:bg-gray-100 text-gray-900',
+		outline:
+			'bg-transparent border-2 border-slate-200 text-slate-600 dark:border-slate-800 dark:text-slate-400'
 	};
 
 	const sizeClasses = {
@@ -51,7 +53,8 @@
 		primary: 'disabled:hover:bg-primary',
 		secondary: 'disabled:hover:bg-slate-200 dark:disabled:hover:bg-[#232f48]',
 		danger: 'disabled:hover:bg-red-500',
-		ghost: 'disabled:hover:bg-transparent'
+		ghost: 'disabled:hover:bg-transparent',
+		outline: 'disabled:hover:bg-transparent'
 	};
 
 	const widthClass = fullWidth ? 'w-full' : '';

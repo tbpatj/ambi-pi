@@ -1,11 +1,19 @@
+<script>
+	import { goto } from '$app/navigation';
+	import Button from '$lib/components/input/Button.svelte';
+</script>
+
 <div class="relative flex w-full flex-col overflow-x-hidden">
 	<div class="flex flex-1 flex-col items-center justify-center px-6 py-26">
 		<div class="relative mb-12 flex items-center justify-center">
-			<div class="rgb-aura absolute size-64 rounded-full"></div>
+			<div class="rgb-aura absolute size-54 rounded-full"></div>
+			<div class="rgb-aura-reverse absolute size-54 rounded-full"></div>
 			<div
 				class="relative z-10 flex size-40 items-center justify-center rounded-full border-4 border-white bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-800"
 			>
-				<span class="material-symbols-outlined text-success text-8xl">check_circle</span>
+				<span class="material-symbols-outlined text-[#22c55e]" style="font-size: 60px;"
+					>check_circle</span
+				>
 			</div>
 		</div>
 		<div class="mb-12 text-center">
@@ -23,11 +31,7 @@
 			</p>
 		</div>
 		<div class="flex w-full max-w-[480px] flex-col gap-4">
-			<button
-				class="bg-primary shadow-primary/25 flex h-16 w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl px-5 text-lg leading-normal font-bold tracking-[0.015em] text-white shadow-lg transition-transform active:scale-[0.98]"
-			>
-				<span class="truncate">Back to Dashboard</span>
-			</button>
+			<Button onclick={() => goto('/')}>Back to Dashboard</Button>
 		</div>
 	</div>
 </div>
@@ -37,11 +41,11 @@
 		background: conic-gradient(
 			from 0deg,
 			#ff0000,
-			#ff7f00,
 			#ffff00,
+			transparent,
 			#00ff00,
-			#0000ff,
 			#4b0082,
+			transparent,
 			#8b00ff,
 			#ff0000
 		);
@@ -50,12 +54,40 @@
 		animation: auraFloat 20s linear infinite;
 	}
 
+	.rgb-aura-reverse {
+		background: conic-gradient(
+			from 0deg,
+			#8b00ff,
+			transparent,
+			#0000ff,
+			#00ff00,
+			transparent,
+			transparent,
+			#ffff00,
+			transparent,
+			#ff0000,
+			#8b00ff
+		);
+		filter: blur(24px);
+		opacity: 0.3;
+		animation: auraFloatReverse 25s linear infinite;
+	}
+
 	@keyframes auraFloat {
 		0% {
 			transform: rotate(0deg);
 		}
 		100% {
 			transform: rotate(360deg);
+		}
+	}
+
+	@keyframes auraFloatReverse {
+		0% {
+			transform: rotate(360deg);
+		}
+		100% {
+			transform: rotate(0deg);
 		}
 	}
 </style>
