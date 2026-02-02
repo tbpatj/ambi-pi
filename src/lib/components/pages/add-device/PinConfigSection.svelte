@@ -2,12 +2,13 @@
 	import DropDown from '$lib/components/input/DropDown.svelte';
 	import Input from '$lib/components/input/Input.svelte';
 	import InputWrapper from '$lib/components/input/InputWrapper.svelte';
+	import type { LEDDeviceType } from '$lib/types/ledDevice';
 	import { explicitEffect } from '$lib/utils/svelte.svelte';
 
 	interface Props {
 		initialPin?: number;
 		initialType?: string;
-		onSubmit: (type: string, pin: number) => void;
+		onSubmit: (type: LEDDeviceType, pin: number) => void;
 	}
 
 	let { onSubmit, initialPin, initialType }: Props = $props();
@@ -94,7 +95,7 @@
 
 		<div class="flex flex-col gap-2">
 			<button
-				onclick={() => onSubmit(ledStripType, dataPin!)}
+				onclick={() => onSubmit(ledStripType as LEDDeviceType, dataPin!)}
 				disabled={!canSubmit}
 				aria-disabled={!canSubmit}
 				class={`bg-primary shadow-primary/20 flex w-full items-center justify-center gap-2 rounded-xl py-4 font-bold text-white shadow-lg transition-transform hover:bg-blue-600 active:scale-[0.98] ${

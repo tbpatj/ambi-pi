@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import BreadCrumb from '$lib/components/layout/BreadCrumb.svelte';
 	import DotProgress from '$lib/components/layout/DotProgress.svelte';
 	import DeviceSearchSection from '$lib/components/pages/add-device/DeviceSearchSection.svelte';
@@ -6,6 +7,8 @@
 	import LedCountSection from '$lib/components/pages/add-device/LedCountSection.svelte';
 	import LedSuccessSection from '$lib/components/pages/add-device/LedSuccessSection.svelte';
 	import PinConfigSection from '$lib/components/pages/add-device/PinConfigSection.svelte';
+	import { deviceStore } from '$lib/stores/deviceStore';
+	import type { LEDDeviceType } from '$lib/types/ledDevice';
 	let step = $state(1);
 
 	let sections = [
@@ -17,7 +20,7 @@
 	];
 
 	let connectedIp = $state('');
-	let ledType = $state('');
+	let ledType = $state<LEDDeviceType>('ws2812b');
 	let dataPin = $state<number | null>(null);
 	let ledCount = $state<number | null>(null);
 
@@ -28,6 +31,28 @@
 			// Navigate back to previous page or home
 			window.history.back();
 		}
+	};
+
+	const handleFinalize = () => {
+		deviceStore.update((s) => {
+			const id = Math.random().toString();
+			let devices = s.ledDevices;
+			devices[id] = {
+				pin: dataPin ?? 0,
+				ledCount: ledCount ?? 0,
+				type: ledType,
+				id: id,
+				name: 'New LED Device',
+				connected: true,
+				animation: null,
+				powered: true,
+				icon: 'tv',
+
+				brightness: 100
+			};
+			return s;
+		});
+		goto('/');
 	};
 </script>
 
@@ -83,5 +108,5 @@
 			}}
 		/>
 	{:else if step === 4}
-		<LedSuccessSection />{/if}
+		<LedSuccessSection onSubmit={handleFinalize} />{/if}
 </div>

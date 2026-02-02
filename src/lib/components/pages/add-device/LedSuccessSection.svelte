@@ -1,6 +1,11 @@
-<script>
-	import { goto } from '$app/navigation';
+<script lang="ts">
 	import Button from '$lib/components/input/Button.svelte';
+
+	interface Props {
+		onSubmit?: () => void;
+	}
+
+	let { onSubmit }: Props = $props();
 </script>
 
 <div class="relative flex w-full flex-col overflow-x-hidden">
@@ -31,7 +36,7 @@
 			</p>
 		</div>
 		<div class="flex w-full max-w-[480px] flex-col gap-4">
-			<Button onclick={() => goto('/')}>Back to Dashboard</Button>
+			<Button onclick={onSubmit}>Back to Dashboard</Button>
 		</div>
 	</div>
 </div>

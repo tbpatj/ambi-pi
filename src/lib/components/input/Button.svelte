@@ -10,7 +10,7 @@
 		variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline';
 		size?: 'sm' | 'md' | 'lg';
 		fullWidth?: boolean;
-		onclick?: () => void;
+		onclick?: (e?: MouseEvent) => void;
 		type?: 'button' | 'submit' | 'reset';
 		class?: string;
 		[key: string]: any;
@@ -62,7 +62,7 @@
 	const buttonClasses = `${baseClasses} ${disabledHoverClasses[variant]} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${customClass}`;
 </script>
 
-<button {type} disabled={disabled || loading} on:click={onclick} class={buttonClasses} {...rest}>
+<button {type} disabled={disabled || loading} {onclick} class={buttonClasses} {...rest}>
 	{#if loading}
 		<Spinner
 			color={variant === 'secondary' ? 'primary' : 'white'}
